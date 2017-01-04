@@ -7,6 +7,7 @@
           "es7"
         ],
         "module": "commonjs",
+        "importHelpers": true,
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,

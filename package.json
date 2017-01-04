@@ -52,6 +52,7 @@
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
     "ts-node": "^1.7.2",
+    "tslib": "^1.4.0",
     "tslint": "^4.0.2",
     "typescript": "^2.1.4",
     "webpack": "^1.14.0",
