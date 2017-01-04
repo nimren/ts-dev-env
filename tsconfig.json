@@ -6,6 +6,7 @@
           "es5",
           "es7"
         ],
+        "target": "es5",
         "module": "commonjs",
         "importHelpers": true,
         "noImplicitAny": true,

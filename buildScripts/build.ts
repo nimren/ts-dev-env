@@ -7,7 +7,7 @@ process.env.NODE_ENV = "production";
 
 console.log(chalk.blue("Webpack running ..."));
 
-webpack(webpackConfig).run((err, stats) => {
+webpack(webpackConfig).run((err: any, stats: webpack.compiler.Stats) => {
   if (err) { // so a fatal error occurred. Stop here.
     console.log(chalk.red(err));
     return 1;
@@ -16,12 +16,12 @@ webpack(webpackConfig).run((err, stats) => {
   const jsonStats: any = stats.toJson();
 
   if (jsonStats.hasErrors) {
-    return jsonStats.errors.map(error => console.log(chalk.red(error)));
+    return jsonStats.errors.map((error:any) => console.log(chalk.red(error)));
   }
 
   if (jsonStats.hasWarnings) {
     console.log(chalk.yellow("Webpack generated the following warnings: "));
-    jsonStats.warnings.map(warning => console.log(chalk.yellow(warning)));
+    jsonStats.warnings.map((warning: any) => console.log(chalk.yellow(warning)));
   }
 
   console.log(`Webpack stats: ${stats}`);

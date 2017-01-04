@@ -7,10 +7,14 @@
     "prestart": "ts-node buildScripts/startMessage.ts",
     "start": "npm-run-all --parallel open:src start-mock-api",
     "open:src": "ts-node buildScripts/srcServer.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\"",
     "generate-mock-data": "ts-node buildScripts/generateMockData.ts",
     "prestart-mock-api": "npm run generate-mock-data",
-    "start-mock-api": "json-server --watch src/api/db.json --port 1338"
+    "start-mock-api": "json-server --watch src/api/db.json --port 1338",
+
+    "clean-dist": "rimraf ./dist && mkdir dist",
+    "prebuild": "npm-run-all clean-dist test",
+    "build": "ts-node buildScripts/build.ts"
   },
   "repository": {
     "type": "git",
