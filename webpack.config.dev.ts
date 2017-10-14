@@ -1,12 +1,11 @@
 import * as path from "path";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
+import { Configuration } from 'webpack';
 
-export default {
-  debug: true,
+const config: Configuration = {
   devtool: "source-map",
-  noInfo: false,
   resolve: {
-    extensions: ["",".ts", ".js"]
+    extensions: [".ts", ".js"]
   },
   entry: [
     path.resolve(__dirname, "src/index")
@@ -18,20 +17,28 @@ export default {
     filename: "bundle.js"
   },
   plugins: [
-    //Create HTML file that includes reference to bundeled js
     new HtmlWebpackPlugin({
       template: "src/index.html",
       inject: true
     })
   ],
   module: {
-    preLoaders: [
-    // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-    { test: /\.js$/, loader: "source-map-loader" }
-    ],
-    loaders: [
-      {test: /\.ts$/, loader: "awesome-typescript-loader"},
-      {test: /\.css$/, loaders: ["style","css"]}
+    rules: [
+      {
+        test: /\.js$/, loader: "source-map-loader", enforce: "pre"
+      },
+      {
+        test: /\.ts$/, loader: "awesome-typescript-loader"
+      },
+      {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" }
+        ]
+      }
     ]
   }
 };
+
+export default config;

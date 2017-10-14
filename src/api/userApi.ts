@@ -1,5 +1,4 @@
-import "whatwg-fetch";
-
+import Service from './service';
 export interface IUserApi {
   getUsersAsync(): Promise<User[]>;
   deleteUserAsync(id:number): Promise<boolean>;
@@ -27,19 +26,18 @@ export class User implements IUser {
 }
 
 export class UserApi implements IUserApi {
-  baseUrl: string = "http://localhost:1338/";
+  baseUrl: string = "http://localhost:1338";
 
   public async getUsersAsync(): Promise<User[]> {
     return new Promise<User[]>(async (resolve, reject) => {
-      let users: User[] = [];
       try {
-        const res: Response = await this.getAsync("users");
-        const json: any[] = await res.json();
-        users = json.map((user: IUser) => new User(user));
+        const res = await Service.getAsync(`${this.baseUrl}/user`);
+        const json = await res.json() as Array<User>;
+        const users = json.map(user => new User(user));
+        resolve(users);
       } catch (error) {
         reject(error);
       }
-      return resolve(users);
     });
   }
 

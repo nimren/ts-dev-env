@@ -4,7 +4,7 @@ import "./index.css";
 
 window.onload = async () => {
   const userApi: IUserApi = new UserApi();
-  const users: IUser[] = await userApi.getUsersAsync();
+  const users = await userApi.getUsersAsync();
 
   let usersBody: string[] = [];
 
@@ -21,7 +21,11 @@ window.onload = async () => {
     `)
   );
 
-  document.getElementById("users").innerHTML = usersBody.join("");
+  const el = document.getElementById("users");
+
+  if(el) {
+    el.innerHTML = usersBody.join("");
+  }
 };
 
 

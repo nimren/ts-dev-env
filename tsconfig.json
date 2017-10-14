@@ -1,21 +1,25 @@
 {
     "compilerOptions": {
         "lib": [
-          "dom",
-          "es2015.promise",
-          "es5",
-          "es7"
+            "dom",
+            "es2015.promise",
+            "es5",
+            "es7"
         ],
         "target": "es5",
         "module": "commonjs",
+        "moduleResolution": "node",
         "importHelpers": true,
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "typeRoots": [
-          "node_modules/@types"
-        ]
+        "allowSyntheticDefaultImports": true,
+        "strictNullChecks": true,
+        "baseUrl": ".",
+        "paths": {
+            "*": ["typings/*", "*"]
+        }
     },
     "include": [
         "src/**/*"

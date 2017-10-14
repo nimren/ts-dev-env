@@ -1,14 +1,12 @@
 import * as path from "path";
-import * as webpack from "webpack";
+import { Configuration, optimize } from "webpack";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
-import * as WebpackMd5Hash from "webpack-md5-hash";
 import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 
-const config: webpack.Configuration = {
-  debug: true,
+const config: Configuration = {
   devtool: "source-map",
   resolve: {
-    extensions: ["",".ts", ".js"]
+    extensions: [".ts", ".js"]
   },
   entry: {
     vendor: path.resolve(__dirname, "src/vendor"),
@@ -22,14 +20,10 @@ const config: webpack.Configuration = {
   },
   plugins: [
     // Generate an external css file with a hash in the filename
-    new ExtractTextPlugin("[name].[contenthash].css"),
-
-    // Hash the files using MD5 so that their names change when the content changes.
-    new WebpackMd5Hash(),
-
+    new ExtractTextPlugin("[name].[chunkhash].css"),
     // Use CommonsChunkPlugin to create a separate bundle
     // of vendor libraries so that they're cached separately.
-    new webpack.optimize.CommonsChunkPlugin({
+    new optimize.CommonsChunkPlugin({
       name: "vendor"
     }),
 
@@ -50,21 +44,24 @@ const config: webpack.Configuration = {
       },
       inject: true
     }),
-
-    // Eliminate duplicate packages when generating bundle
-    new webpack.optimize.DedupePlugin(),
-
     // Minify JS
-    new webpack.optimize.UglifyJsPlugin()
+    new optimize.UglifyJsPlugin()
   ],
   module: {
-    preLoaders: [
-    // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-        { test: /\.js$/, loader: "source-map-loader" }
-    ],
-    loaders: [
-      {test: /\.ts$/, loader: "awesome-typescript-loader"},
-      {test: /\.css$/, loader: ExtractTextPlugin.extract("css?sourceMap")}
+    rules: [
+      {
+        test: /\.js$/, loader: "source-map-loader", enforce: "pre"
+      },
+      {
+        test: /\.ts$/, loader: "awesome-typescript-loader"
+      },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
+      }
     ]
   }
 };
