@@ -1,70 +1,35 @@
-import Service from './service';
+import { IUser, User } from "./../models";
+import Service from "./service";
+
 export interface IUserApi {
   getUsersAsync(): Promise<User[]>;
-  deleteUserAsync(id:number): Promise<boolean>;
-}
-
-export interface IUser {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
-
-export class User implements IUser {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-
-  constructor(user: IUser) {
-    this.id = user.id;
-    this.firstName = user.firstName;
-    this.lastName = user.lastName;
-    this.email = user.email;
-  }
+  deleteUserAsync(id: number): Promise<boolean>;
 }
 
 export class UserApi implements IUserApi {
-  baseUrl: string = "http://localhost:1338";
+  private baseUrl: string = "http://localhost:1338";
 
   public async getUsersAsync(): Promise<User[]> {
-    return new Promise<User[]>(async (resolve, reject) => {
       try {
-        const res = await Service.getAsync(`${this.baseUrl}/user`);
-        const json = await res.json() as Array<User>;
-        const users = json.map(user => new User(user));
-        resolve(users);
+        const res = await Service.getAsync<IUser[]>(`${this.baseUrl}/users`);
+        return res.data.map((user) => new User(user));
+
       } catch (error) {
-        reject(error);
+        // log error
       }
-    });
+
+      return new Array<User>();
   }
 
-  public async deleteUserAsync(id:number): Promise<boolean> {
-    return new Promise<boolean>(async (resolve, reject) => {
-      try {
-        const res: Response = await this.delAsync(`users/${id}`);
-        if(res.ok) {
-          resolve(true);
-        }else {
-          reject(false);
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
+  public async deleteUserAsync(id: number): Promise<boolean> {
+    try {
+      const res = await Service.delAsync(`${this.baseUrl}/users/${id}`);
+      return true;
 
-  private getAsync(route: string): Promise<Response> {
-    return fetch(`${this.baseUrl}${route}`);
-  }
+    } catch (error) {
+      // log error
+    }
 
-  private delAsync(route: string): Promise<Response>{
-    const req: Request = new Request(`${this.baseUrl}${route}`, {
-      method: "DELETE"
-    });
-
-    return fetch(req);
+    return false;
   }
 }

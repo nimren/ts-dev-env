@@ -1,14 +1,14 @@
-import {UserApi, IUserApi, IUser} from "./api/userApi";
+import {  IUserApi, UserApi } from "./api/userApi";
 import "./index.css";
-
+import { IUser } from "./models";
 
 window.onload = async () => {
-  const userApi: IUserApi = new UserApi();
-  const users = await userApi.getUsersAsync();
+  const service = new UserApi();
+  const users = await service.getUsersAsync();
 
-  let usersBody: string[] = [];
+  const usersBody: string[] = [];
 
-  users.forEach(user => usersBody.push(`
+  users.forEach((user) => usersBody.push(`
       <tr>
         <td>
             <a href="#" data-id="${user.id}" class="deleteUser">Delete</a>

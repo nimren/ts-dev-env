@@ -1,22 +1,15 @@
-export default class Service {
-    static getAsync(url: string, init?: RequestInit): Promise<Response> {
-        const defaults: RequestInit = {
-            method: 'GET',
-            mode: 'same-origin',
-            cache: 'default'
-        };
+import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
 
-        return fetch(url, defaults)
+export default class Service {
+    public static getAsync<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T> {
+        return axios.get<T>(url, config);
     }
 
-    static postAsync(url: string, body: any, init?: RequestInit): Promise<Response> {
-        const defaults: RequestInit = {
-            method: 'POST',
-            mode: 'same-origin',
-            cache: 'default',
-            body: body
-        };
+    public static postAsync(url: string, data: any, config?: AxiosRequestConfig): AxiosPromise<any> {
+        return axios.post(url, data, config);
+    }
 
-        return fetch(url, defaults)
+    public static delAsync(url: string): AxiosPromise<any> {
+        return axios.delete(url);
     }
 }
