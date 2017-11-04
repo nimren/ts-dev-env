@@ -1,31 +1,27 @@
-import {  IUserApi, UserApi } from "./api/userApi";
-import "./index.css";
-import { IUser } from "./models";
+import { UserService } from './service';
+import './index.css';
 
 window.onload = async () => {
-  const service = new UserApi();
+  const service = new UserService();
   const users = await service.getUsersAsync();
+  const usersBody = users.map((user) => {
+    return `
+    <tr>
+      <td>
+          <a href="#" data-id="${user.id}" class="deleteUser">Delete</a>
+      </td>
+      <td>${user.id}</td>
+      <td>${user.firstName}</td>
+      <td>${user.lastName}</td>
+      <td>${user.email}</td>
+    </tr>
+    `;
+  }).join('');
 
-  const usersBody: string[] = [];
+  const el = document.getElementById('users');
 
-  users.forEach((user) => usersBody.push(`
-      <tr>
-        <td>
-            <a href="#" data-id="${user.id}" class="deleteUser">Delete</a>
-        </td>
-        <td>${user.id}</td>
-        <td>${user.firstName}</td>
-        <td>${user.lastName}</td>
-        <td>${user.email}</td>
-      </tr>
-    `)
-  );
+  el!.innerHTML = usersBody;
 
-  const el = document.getElementById("users");
-
-  if(el) {
-    el.innerHTML = usersBody.join("");
-  }
 };
 
 

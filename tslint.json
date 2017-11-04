@@ -1,9 +1,12 @@
 {
     "defaultSeverity": "error",
     "extends": [
-        "tslint:recommended"
+        "tslint-config-airbnb"
     ],
     "jsRules": {},
-    "rules": {},
-    "rulesDirectory": ["node_modules/tslint-microsoft-contrib"]
+    "rules": {
+      "await-promise": [true, "AxiosPromise"]
+    },
+    "rulesDirectory": [
+    ]
 }

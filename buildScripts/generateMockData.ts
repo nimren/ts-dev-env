@@ -5,8 +5,8 @@ import * as chalk from "chalk";
 
 jsf.resolve(schema).then((sample: string) => {
   const json: string = JSON.stringify(sample);
- 
-  fs.writeFile("./src/api/db.json", json, (err: NodeJS.ErrnoException) => {
+
+  fs.writeFile("./src/service/db.json", json, (err: NodeJS.ErrnoException) => {
     if(err){
       return console.log(chalk.red(err.message));
     }else {

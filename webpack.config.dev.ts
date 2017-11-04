@@ -25,10 +25,13 @@ const config: Configuration = {
   module: {
     rules: [
       {
-        test: /\.js$/, loader: "source-map-loader", enforce: "pre"
+        test: /\.js$/,
+        loader: "source-map-loader",
+        enforce: "pre"
       },
       {
-        test: /\.ts$/, loader: "awesome-typescript-loader"
+        test: /\.ts$/,
+        loader: "awesome-typescript-loader"
       },
       {
         test: /\.css$/,
